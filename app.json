@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "GG Dance Parent",
+    "slug": "gg-dance-parent",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#0f172a"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ggdance.parent"
+    },
+    "android": {
+      "package": "com.ggdance.parent"
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "color": "#eab308"
+        }
+      ],
+      "expo-asset"
+    ]
+  }
+}
