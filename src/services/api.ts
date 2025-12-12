@@ -107,10 +107,9 @@ export const productService = {
     return data;
   },
 
-  reserve: async (productId: number, studentId: number, quantity: number) => {
-    const { data } = await api.post('/products/reserve', {
-      productId,
-      studentId,
+  reserve: async (productId: string, studentCode: string, quantity: number = 1) => {
+    const { data } = await api.post(`/products/${productId}/order`, {
+      studentCode,
       quantity,
     });
     return data;

@@ -230,18 +230,22 @@ export default function App() {
                   onReserve={async (productId: string, size?: string, age?: string, notes?: string) => {
                     try {
                       console.log('Reserve product', productId, 'size:', size, 'age:', age, 'notes:', notes);
-                      const response = await fetch('http://141.227.133.61:3000/api/products/reserve', {
+                      
+                      // Utiliser le premier élève du parent pour la commande
+                      if (students.length === 0) {
+                        alert('❌ Aucun élève trouvé pour ce parent');
+                        return;
+                      }
+                      const studentCode = students[0].id;
+                      
+                      const response = await fetch(`http://141.227.133.61:3000/api/products/${productId}/order`, {
                         method: 'POST',
                         headers: { 
                           'Content-Type': 'application/json',
                           'Authorization': `Bearer ${user?.phone || ''}`,
                         },
                         body: JSON.stringify({ 
-                          productId, 
-                          parentPhone: user?.phone,
-                          size: size || '',
-                          age: age || '',
-                          notes: notes || '',
+                          studentCode,
                           quantity: 1
                         })
                       });

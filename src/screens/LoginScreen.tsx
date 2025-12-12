@@ -9,6 +9,7 @@ import {
   Platform,
   Alert,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { authService, studentService } from '../services/api';
@@ -62,7 +63,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
         <View style={styles.content}>
           {/* Logo / Titre */}
           <View style={styles.header}>
-            <Text style={styles.logo}>💃</Text>
+            <Image 
+              source={require('../../assets/images/logo.png')}
+              style={styles.logo}
+              resizeMode="contain"
+            />
             <Text style={styles.title}>GG Dance</Text>
             <Text style={styles.subtitle}>Espace Parent</Text>
           </View>
@@ -136,8 +141,9 @@ const styles = StyleSheet.create({
     marginBottom: 48,
   },
   logo: {
-    fontSize: 64,
-    marginBottom: 16,
+    width: 120,
+    height: 120,
+    marginBottom: 24,
   },
   title: {
     fontSize: 32,
