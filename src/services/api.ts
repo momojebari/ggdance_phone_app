@@ -2,8 +2,8 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthResponse, Student, Event, Group } from '../types';
 
-// URL du backend sur VPS (port 3000 exposé)
-const API_BASE_URL = 'http://141.227.133.61:3000/api';
+// URL du backend sur VPS avec HTTPS
+const API_BASE_URL = 'https://www.ggdanceacademy.com/api';
 
 // Instance Axios avec intercepteur pour le token
 const api = axios.create({

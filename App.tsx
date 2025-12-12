@@ -162,7 +162,7 @@ export default function App() {
                   onRegister={async (eventId: string, studentIds: string[]) => {
                     try {
                       console.log('Register students', studentIds, 'to event', eventId);
-                      const response = await fetch(`http://141.227.133.61:3000/api/events/${eventId}/register`, {
+                      const response = await fetch(`https://www.ggdanceacademy.com/api/events/${eventId}/register`, {
                         method: 'POST',
                         headers: { 
                           'Content-Type': 'application/json',
@@ -238,7 +238,7 @@ export default function App() {
                       }
                       const studentCode = students[0].id;
                       
-                      const response = await fetch(`http://141.227.133.61:3000/api/products/${productId}/order`, {
+                      const response = await fetch(`https://www.ggdanceacademy.com/api/products/${productId}/order`, {
                         method: 'POST',
                         headers: { 
                           'Content-Type': 'application/json',
