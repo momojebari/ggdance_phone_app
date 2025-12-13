@@ -227,6 +227,36 @@ export const DashboardScreenNew: React.FC<DashboardScreenNewProps> = ({
           />
         }
       >
+        {/* Sélecteur d'enfants (si plusieurs) */}
+        {students.length > 1 && (
+          <View style={styles.studentSelector}>
+            <TouchableOpacity
+              style={styles.selectorButton}
+              onPress={() => setSelectedStudentIndex(Math.max(0, selectedStudentIndex - 1))}
+              disabled={selectedStudentIndex === 0}
+            >
+              <Text style={[styles.selectorButtonText, selectedStudentIndex === 0 && styles.selectorButtonDisabled]}>
+                ◀
+              </Text>
+            </TouchableOpacity>
+            
+            <View style={styles.selectorCenter}>
+              <Text style={styles.selectorLabel}>Enfant {selectedStudentIndex + 1} / {students.length}</Text>
+              <Text style={styles.selectorName}>{student.firstName} {student.lastName}</Text>
+            </View>
+            
+            <TouchableOpacity
+              style={styles.selectorButton}
+              onPress={() => setSelectedStudentIndex(Math.min(students.length - 1, selectedStudentIndex + 1))}
+              disabled={selectedStudentIndex === students.length - 1}
+            >
+              <Text style={[styles.selectorButtonText, selectedStudentIndex === students.length - 1 && styles.selectorButtonDisabled]}>
+                ▶
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
         {/* Header avec photo de profil */}
         <View style={styles.header}>
           {/* Badge Anniversaire */}
@@ -895,6 +925,53 @@ const styles = StyleSheet.create({
   },
   financialNoData: {
     color: '#64748b',
+  },
+  // Styles pour le sélecteur d'enfants
+  studentSelector: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: 'rgba(192, 132, 252, 0.1)',
+    borderRadius: 16,
+    padding: 16,
+    marginHorizontal: 16,
+    marginTop: 16,
+    marginBottom: 8,
+    borderWidth: 2,
+    borderColor: 'rgba(192, 132, 252, 0.3)',
+  },
+  selectorButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(192, 132, 252, 0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  selectorButtonText: {
+    color: '#c084fc',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  selectorButtonDisabled: {
+    color: '#64748b',
+    opacity: 0.3,
+  },
+  selectorCenter: {
+    flex: 1,
+    alignItems: 'center',
+    paddingHorizontal: 16,
+  },
+  selectorLabel: {
+    color: '#94a3b8',
+    fontSize: 12,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  selectorName: {
+    color: '#ffffff',
+    fontSize: 18,
+    fontWeight: 'bold',
     fontSize: 12,
     fontStyle: 'italic',
   },
