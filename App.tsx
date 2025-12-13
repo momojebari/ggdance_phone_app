@@ -252,13 +252,13 @@ export default function App() {
                       });
                       
                       if (response.ok) {
-                        alert('✅ Réservation réussie! Paiement au comptoir.');
-                      } else {
-                      });
-                      
-                      if (response.ok) {
                         alert(`✅ Réservation réussie pour ${studentName}!\nPaiement au comptoir.`);
-                      } else {error('Error reserving:', error);
+                      } else {
+                        const error = await response.json();
+                        alert(`❌ Erreur: ${error.message || 'Réservation échouée'}`);
+                      }
+                    } catch (error) {
+                      console.error('Error reserving:', error);
                       alert('❌ Erreur de connexion');
                     }
                   }}

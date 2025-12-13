@@ -972,8 +972,6 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 18,
     fontWeight: 'bold',
-    fontSize: 12,
-    fontStyle: 'italic',
   },
   historyTable: {
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
