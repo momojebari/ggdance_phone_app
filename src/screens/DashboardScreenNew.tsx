@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Student, Group } from '../types';
+import { imageService } from '../utils/imageService';
 import { getAvatarPlaceholder } from '../utils/helpers';
 
 const { width } = Dimensions.get('window');
