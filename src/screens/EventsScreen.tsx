@@ -35,14 +35,12 @@ export const EventsScreen: React.FC<EventsScreenProps> = ({ students, user, navi
     try {
       // Charger les événements depuis l'API
       const eventsData = await eventService.getAll();
-      // Convertir les imageUrl relatifs en URLs complètes
+      // Convertir les imageUrl avec le service centralisé
       const eventsWithFullUrls = eventsData.map((event: any) => ({
         ...event,
         id: String(event.id),
         price: parseFloat(event.price),
-        imageUrl: event.imageUrl?.startsWith('/') 
-          ? `http://141.227.133.61:3000${event.imageUrl}`
-          : event.imageUrl,
+        imageUrl: imageService.getUrl(event.imageUrl),
         registeredStudentIds: event.registeredStudentIds || [],
       }));
       setEvents(eventsWithFullUrls);
