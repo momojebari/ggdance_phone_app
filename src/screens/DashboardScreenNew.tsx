@@ -49,7 +49,6 @@ export const DashboardScreenNew: React.FC<DashboardScreenNewProps> = ({
     } catch (error) {
       console.error('Erreur chargement groupes:', error);
     }
-  };}
   };
 
   const handleRefresh = async () => {
