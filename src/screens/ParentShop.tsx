@@ -30,7 +30,7 @@ interface ParentShopProps {
   students: Student[];
   user: User | null;
   navigation: any;
-  onReserve: (productId: string, size?: string, age?: string, notes?: string) => Promise<void>;
+  onReserve: (productId: string, studentId: string, studentName: string, size?: string, age?: string, notes?: string) => Promise<void>;
 }
 
 export const ParentShop: React.FC<ParentShopProps> = ({ students, user, navigation, onReserve }) => {
@@ -38,6 +38,7 @@ export const ParentShop: React.FC<ParentShopProps> = ({ students, user, navigati
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedStudentId, setSelectedStudentId] = useState<string>('');
   const [size, setSize] = useState('');
   const [age, setAge] = useState('');
   const [notes, setNotes] = useState('');
@@ -77,6 +78,7 @@ export const ParentShop: React.FC<ParentShopProps> = ({ students, user, navigati
 
   const openReservationModal = (product: Product) => {
     setSelectedProduct(product);
+    setSelectedStudentId(students.length > 0 ? String(students[0].id) : '');
     setSize('');
     setAge('');
     setNotes('');
@@ -84,17 +86,34 @@ export const ParentShop: React.FC<ParentShopProps> = ({ students, user, navigati
 
   const closeModal = () => {
     setSelectedProduct(null);
+    setSelectedStudentId('');
     setSize('');
     setAge('');
     setNotes('');
   };
 
   const handleReserve = async () => {
-    if (!selectedProduct) return;
+    if (!selectedProduct || !selectedStudentId) {
+      alert('⚠️ Veuillez sélectionner un enfant');
+      return;
+    }
+
+    const selectedStudent = students.find(s => String(s.id) === selectedStudentId);
+    if (!selectedStudent) {
+      alert('⚠️ Enfant non trouvé');
+      return;
+    }
 
     setIsReserving(true);
     try {
-      await onReserve(selectedProduct.id, size, age, notes);
+      await onReserve(
+        selectedProduct.id,
+        selectedStudentId,
+        `${selectedStudent.firstName} ${selectedStudent.lastName}`,
+        size,
+        age,
+        notes
+      );
       closeModal();
     } catch (error) {
       console.error('Error reserving:', error);
@@ -224,6 +243,46 @@ export const ParentShop: React.FC<ParentShopProps> = ({ students, user, navigati
 
                   {/* Form */}
                   <View style={styles.form}>
+                    {/* Student Selector */}
+                    {students.length > 1 && (
+                      <View style={styles.inputGroup}>
+                        <Text style={styles.inputLabel}>👤 Pour quel enfant ? *</Text>
+                        <View style={styles.studentPickerContainer}>
+                          {students.map((student) => (
+                            <TouchableOpacity
+                              key={student.id}
+                              style={[
+                                styles.studentOption,
+                                selectedStudentId === String(student.id) && styles.studentOptionSelected
+                              ]}
+                              onPress={() => setSelectedStudentId(String(student.id))}
+                            >
+                              <Text style={[
+                                styles.studentOptionText,
+                                selectedStudentId === String(student.id) && styles.studentOptionTextSelected
+                              ]}>
+                                {student.firstName} {student.lastName}
+                              </Text>
+                              {selectedStudentId === String(student.id) && (
+                                <Text style={styles.checkMark}>✓</Text>
+                              )}
+                            </TouchableOpacity>
+                          ))}
+                        </View>
+                      </View>
+                    )}
+                    
+                    {students.length === 1 && (
+                      <View style={styles.inputGroup}>
+                        <Text style={styles.inputLabel}>👤 Réservé pour</Text>
+                        <View style={styles.singleStudentBox}>
+                          <Text style={styles.singleStudentText}>
+                            {students[0].firstName} {students[0].lastName}
+                          </Text>
+                        </View>
+                      </View>
+                    )}
+
                     <View style={styles.inputGroup}>
                       <Text style={styles.inputLabel}>Taille (optionnel)</Text>
                       <TextInput
@@ -475,6 +534,50 @@ const styles = StyleSheet.create({
   textArea: {
     minHeight: 80,
     textAlignVertical: 'top',
+  },
+  studentPickerContainer: {
+    gap: 8,
+  },
+  studentOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: 'rgba(30, 41, 59, 0.8)',
+    borderWidth: 2,
+    borderColor: 'rgba(100, 116, 139, 0.3)',
+    borderRadius: 12,
+    padding: 14,
+  },
+  studentOptionSelected: {
+    backgroundColor: 'rgba(234, 179, 8, 0.15)',
+    borderColor: '#eab308',
+  },
+  studentOptionText: {
+    fontSize: 16,
+    color: '#94a3b8',
+    fontWeight: '600',
+  },
+  studentOptionTextSelected: {
+    color: '#eab308',
+    fontWeight: '700',
+  },
+  checkMark: {
+    fontSize: 20,
+    color: '#eab308',
+    fontWeight: 'bold',
+  },
+  singleStudentBox: {
+    backgroundColor: 'rgba(234, 179, 8, 0.15)',
+    borderWidth: 2,
+    borderColor: '#eab308',
+    borderRadius: 12,
+    padding: 14,
+  },
+  singleStudentText: {
+    fontSize: 16,
+    color: '#eab308',
+    fontWeight: '700',
+    textAlign: 'center',
   },
   infoBox: {
     backgroundColor: 'rgba(6, 182, 212, 0.1)',

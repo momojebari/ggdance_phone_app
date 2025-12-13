@@ -174,7 +174,13 @@ export default function App() {
                       if (response.ok) {
                         const result = await response.json();
                         if (result.success) {
-                          alert('✅ Inscription réussie! Votre enfant est inscrit à l\'événement.');
+                          // Récupérer les noms des enfants inscrits
+                          const registeredNames = students
+                            .filter(s => studentIds.includes(String(s.id)))
+                            .map(s => s.firstName)
+                            .join(', ');
+                          
+                          alert(`✅ Inscription réussie!\nRéservé pour: ${registeredNames}\n\nPaiement au comptoir.`);
                           // Recharger les données
                           if (user?.phone) {
                             await loadStudents(user.phone);
@@ -227,16 +233,11 @@ export default function App() {
                   {...props}
                   students={students}
                   user={user}
-                  onReserve={async (productId: string, size?: string, age?: string, notes?: string) => {
+                  onReserve={async (productId: string, studentId: string, studentName: string, size?: string, age?: string, notes?: string) => {
                     try {
-                      console.log('Reserve product', productId, 'size:', size, 'age:', age, 'notes:', notes);
+                      console.log(`Reserve product ${productId} pour ${studentName} (ID: ${studentId})`, 'size:', size, 'age:', age, 'notes:', notes);
                       
-                      // Utiliser le premier élève du parent pour la commande
-                      if (students.length === 0) {
-                        alert('❌ Aucun élève trouvé pour ce parent');
-                        return;
-                      }
-                      const studentCode = students[0].id;
+                      const studentCode = studentId;
                       
                       const response = await fetch(`https://www.ggdanceacademy.com/api/products/${productId}/order`, {
                         method: 'POST',
@@ -253,11 +254,11 @@ export default function App() {
                       if (response.ok) {
                         alert('✅ Réservation réussie! Paiement au comptoir.');
                       } else {
-                        const error = await response.json();
-                        alert(`❌ Erreur: ${error.message || 'Réservation échouée'}`);
-                      }
-                    } catch (error) {
-                      console.error('Error reserving:', error);
+                      });
+                      
+                      if (response.ok) {
+                        alert(`✅ Réservation réussie pour ${studentName}!\nPaiement au comptoir.`);
+                      } else {error('Error reserving:', error);
                       alert('❌ Erreur de connexion');
                     }
                   }}
