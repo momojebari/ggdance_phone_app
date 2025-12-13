@@ -60,7 +60,10 @@ export const DashboardScreenNew: React.FC<DashboardScreenNewProps> = ({
     setRefreshing(false);
   };
 
-  if (students.length === 0) {
+  console.log('📊 DashboardScreenNew rendu', { studentsCount: students?.length, selectedIndex: selectedStudentIndex });
+
+  if (!students || students.length === 0) {
+    console.log('⚠️ Aucun élève trouvé');
     return (
       <LinearGradient colors={['#1a1d3d', '#2d3561']} style={styles.container}>
         <View style={styles.emptyState}>
@@ -71,6 +74,7 @@ export const DashboardScreenNew: React.FC<DashboardScreenNewProps> = ({
   }
 
   const student = students[selectedStudentIndex];
+  console.log('👤 Élève sélectionné:', student?.firstName, student?.lastName);
   
   // ===== LOGIQUE DE PAIEMENT (comme ParentViews.tsx) =====
   const today = new Date();
@@ -140,29 +144,42 @@ export const DashboardScreenNew: React.FC<DashboardScreenNewProps> = ({
   const hasUnpaidOthers = unpaidOthers.length > 0;
 
   // ===== LOGIQUE ANNIVERSAIRE (comme ParentViews.tsx) =====
-  const birthDateParts = student.birthDate.split('-'); // Format: YYYY-MM-DD
-  const birthDay = parseInt(birthDateParts[2], 10);
-  const birthMonth = parseInt(birthDateParts[1], 10);
-  const birthYear = parseInt(birthDateParts[0], 10);
-  
-  const todayDay = today.getDate();
-  const todayMonth = today.getMonth() + 1;
-  
-  const isBirthdayToday = todayDay === birthDay && todayMonth === birthMonth;
-  
-  // Vérifier si c'est demain (veille d'anniversaire)
-  const tomorrow = new Date(today);
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const tomorrowDay = tomorrow.getDate();
-  const tomorrowMonth = tomorrow.getMonth() + 1;
-  
-  const isBirthdayTomorrow = tomorrowDay === birthDay && tomorrowMonth === birthMonth;
-  
-  // Calculer l'âge
-  let age = currentYear - birthYear;
-  const monthDiff = todayMonth - birthMonth;
-  if (monthDiff < 0 || (monthDiff === 0 && todayDay < birthDay)) {
-    age--;
+  let birthDay = 0;
+  let birthMonth = 0;
+  let birthYear = 2000;
+  let isBirthdayToday = false;
+  let isBirthdayTomorrow = false;
+  let age = 0;
+
+  if (student.birthDate && typeof student.birthDate === 'string') {
+    try {
+      const birthDateParts = student.birthDate.split('-'); // Format: YYYY-MM-DD
+      birthDay = parseInt(birthDateParts[2], 10);
+      birthMonth = parseInt(birthDateParts[1], 10);
+      birthYear = parseInt(birthDateParts[0], 10);
+      
+      const todayDay = today.getDate();
+      const todayMonth = today.getMonth() + 1;
+      
+      isBirthdayToday = todayDay === birthDay && todayMonth === birthMonth;
+      
+      // Vérifier si c'est demain (veille d'anniversaire)
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrowDay = tomorrow.getDate();
+      const tomorrowMonth = tomorrow.getMonth() + 1;
+      
+      isBirthdayTomorrow = tomorrowDay === birthDay && tomorrowMonth === birthMonth;
+      
+      // Calculer l'âge
+      age = currentYear - birthYear;
+      const monthDiff = todayMonth - birthMonth;
+      if (monthDiff < 0 || (monthDiff === 0 && todayDay < birthDay)) {
+        age--;
+      }
+    } catch (error) {
+      console.error('Erreur parsing date anniversaire:', error);
+    }
   }
 
   // Calculer le taux de présence

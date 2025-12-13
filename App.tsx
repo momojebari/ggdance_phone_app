@@ -60,9 +60,14 @@ export default function App() {
   };
 
   const handleLoginSuccess = async (userData: User, studentsData: Student[]) => {
+    console.log('📱 App - handleLoginSuccess appelé', { 
+      user: userData?.email, 
+      studentsCount: studentsData?.length 
+    });
     setUser(userData);
     setStudents(studentsData);
     await AsyncStorage.setItem('user', JSON.stringify(userData));
+    console.log('📱 App - Passage à isAuthenticated=true');
     setIsAuthenticated(true);
   };
 
