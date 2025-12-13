@@ -34,10 +34,11 @@ export const DashboardScreenNew: React.FC<DashboardScreenNewProps> = ({
   const [selectedStudentIndex, setSelectedStudentIndex] = useState(0);
   const [groups, setGroups] = useState<{ [key: number]: Group }>({});
 
-  // Charger les groupes depuis l'API
+  // Charger les groupes depuis l'API (non-bloquant)
   useEffect(() => {
-    loadGroups();
+    loadGroups().catch(err => console.log('Groupes non chargés:', err));
   }, []);
+  
   const loadGroups = async () => {
     try {
       const groupsData = await groupService.getAll();
@@ -48,6 +49,7 @@ export const DashboardScreenNew: React.FC<DashboardScreenNewProps> = ({
       setGroups(groupsMap);
     } catch (error) {
       console.error('Erreur chargement groupes:', error);
+      // Continuer même si les groupes ne se chargent pas
     }
   };
 
