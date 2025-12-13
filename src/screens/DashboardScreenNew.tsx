@@ -13,6 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Student, Group } from '../types';
 import { imageService } from '../utils/imageService';
 import { getAvatarPlaceholder } from '../utils/helpers';
+import { groupService } from '../services/api';
 
 const { width } = Dimensions.get('window');
 
@@ -37,21 +38,18 @@ export const DashboardScreenNew: React.FC<DashboardScreenNewProps> = ({
   useEffect(() => {
     loadGroups();
   }, []);
-
   const loadGroups = async () => {
     try {
-      const response = await fetch('http://141.227.133.61:3000/api/groups');
-      if (response.ok) {
-        const groupsData: Group[] = await response.json();
-        const groupsMap: { [key: number]: Group } = {};
-        groupsData.forEach((group) => {
-          groupsMap[group.id] = group;
-        });
-        setGroups(groupsMap);
-      }
+      const groupsData = await groupService.getAll();
+      const groupsMap: { [key: number]: Group } = {};
+      groupsData.forEach((group) => {
+        groupsMap[group.id] = group;
+      });
+      setGroups(groupsMap);
     } catch (error) {
       console.error('Erreur chargement groupes:', error);
     }
+  };}
   };
 
   const handleRefresh = async () => {

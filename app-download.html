@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GG Dance - Application Parents</title>
+    <link rel="icon" href="https://www.ggdanceacademy.com/uploads/images/compressed-1764857554052-6viu3.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px 30px;
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(234, 179, 8, 0.3);
+        }
+        h1 {
+            color: #eab308;
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(234, 179, 8, 0.5);
+        }
+        .subtitle {
+            color: #94a3b8;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        .platform {
+            background: linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(245, 158, 11, 0.2));
+            padding: 12px 24px;
+            border-radius: 50px;
+            margin: 20px auto;
+            color: #eab308;
+            font-weight: 700;
+            font-size: 18px;
+            display: inline-block;
+            border: 2px solid rgba(234, 179, 8, 0.3);
+        }
+        .download-btn {
+            background: linear-gradient(135deg, #eab308 0%, #f59e0b 100%);
+            color: #0f172a;
+            font-size: 20px;
+            font-weight: 900;
+            padding: 18px 50px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(234, 179, 8, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(234, 179, 8, 0.6);
+        }
+        .download-btn:active {
+            transform: translateY(0);
+        }
+        .warning {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid rgba(239, 68, 68, 0.4);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: left;
+        }
+        .warning strong {
+            color: #ef4444;
+            font-size: 18px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .instructions {
+            background: rgba(6, 182, 212, 0.1);
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 30px;
+            text-align: left;
+        }
+        .instructions h3 {
+            color: #06b6d4;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        .step {
+            margin: 18px 0;
+            padding-left: 10px;
+            line-height: 1.6;
+        }
+        .step strong {
+            color: #eab308;
+            font-size: 18px;
+        }
+        .step ul {
+            margin-top: 10px;
+            padding-left: 25px;
+        }
+        .step li {
+            margin: 8px 0;
+            color: #cbd5e1;
+        }
+        .contact {
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .loader {
+            border: 3px solid rgba(234, 179, 8, 0.2);
+            border-top: 3px solid #eab308;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://www.ggdanceacademy.com/uploads/images/compressed-1764857554052-6viu3.png" alt="GG Dance" class="logo">
+        <h1>GG Dance Parents</h1>
+        <p class="subtitle">Application officielle pour les parents</p>
+        
+        <div class="platform pulse" id="platform-info">
+            🔍 Détection du système...
+        </div>
+        
+        <a href="#" id="download-btn" class="download-btn" style="display:none;">
+            📥 Télécharger l'Application
+        </a>
+        
+        <div class="loader" id="loader" style="display:none;"></div>
+        
+        <div class="warning" id="android-warning" style="display:none;">
+            <strong>⚠️ Message Important</strong>
+            Android va afficher un avertissement de sécurité.<br>
+            <strong style="color: #10b981;">C'est NORMAL</strong> - L'application est 100% sécurisée !<br>
+            Suivez simplement les étapes ci-dessous.
+        </div>
+        
+        <div class="instructions" id="instructions" style="display:none;">
+            <h3>📋 Instructions d'installation</h3>
+            <div id="android-steps" style="display:none;">
+                <div class="step">
+                    <strong>1️⃣</strong> Le téléchargement commence automatiquement
+                </div>
+                <div class="step">
+                    <strong>2️⃣</strong> Ouvrez le fichier téléchargé (barre de notifications)
+                </div>
+                <div class="step">
+                    <strong>3️⃣</strong> Quand le message apparaît :
+                    <ul>
+                        <li>✅ Appuyez sur <strong>"Paramètres"</strong></li>
+                        <li>✅ Activez <strong>"Autoriser depuis cette source"</strong></li>
+                        <li>✅ Revenez en arrière (flèche ◀)</li>
+                        <li>✅ Appuyez sur <strong>"Installer"</strong></li>
+                    </ul>
+                </div>
+                <div class="step">
+                    <strong>4️⃣</strong> Ouvrez l'application et connectez-vous avec vos identifiants
+                </div>
+                <div class="step" style="background: rgba(16, 185, 129, 0.1); padding: 15px; border-radius: 12px; margin-top: 20px;">
+                    <strong style="color: #10b981;">💡 Astuce :</strong> Vos identifiants sont :<br>
+                    📧 Email : votre email<br>
+                    🔑 Mot de passe : votre numéro de téléphone
+                </div>
+            </div>
+            <div id="ios-steps" style="display:none;">
+                <div class="step" style="background: rgba(239, 68, 68, 0.1); padding: 20px; border-radius: 12px;">
+                    <strong>❌ iOS non disponible</strong><br><br>
+                    Désolé, la version iPhone n'est pas encore disponible.<br>
+                    Veuillez utiliser un téléphone Android pour le moment.<br><br>
+                    La version iOS arrivera prochainement !
+                </div>
+            </div>
+            <div id="desktop-steps" style="display:none;">
+                <div class="step" style="background: rgba(100, 116, 139, 0.2); padding: 20px; border-radius: 12px;">
+                    <strong>💻 Accès depuis ordinateur</strong><br><br>
+                    Cette application est conçue pour les téléphones.<br><br>
+                    <strong>Scannez le QR code</strong> affiché à l'académie avec votre téléphone Android pour télécharger l'application.
+                </div>
+            </div>
+        </div>
+        
+        <div class="contact">
+            <strong style="color: #eab308;">Besoin d'aide ?</strong><br>
+            📞 Contactez l'académie<br>
+            📧 contact@ggdanceacademy.com<br>
+            🌐 www.ggdanceacademy.com
+        </div>
+    </div>
+    
+    <script>
+        // Détecter le système d'exploitation
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        const platformInfo = document.getElementById('platform-info');
+        const downloadBtn = document.getElementById('download-btn');
+        const loader = document.getElementById('loader');
+        const instructions = document.getElementById('instructions');
+        const androidWarning = document.getElementById('android-warning');
+        const androidSteps = document.getElementById('android-steps');
+        const iosSteps = document.getElementById('ios-steps');
+        const desktopSteps = document.getElementById('desktop-steps');
+        
+        // URL du fichier APK - À REMPLACER avec l'URL réelle de ton APK
+        const APK_URL = 'https://www.ggdanceacademy.com/downloads/gg-dance-parent.apk';
+        
+        setTimeout(() => {
+            if (/android/i.test(userAgent)) {
+                // Android détecté
+                platformInfo.innerHTML = '🤖 Android Détecté';
+                platformInfo.style.background = 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.2))';
+                platformInfo.style.borderColor = 'rgba(16, 185, 129, 0.5)';
+                platformInfo.style.color = '#10b981';
+                platformInfo.classList.remove('pulse');
+                
+                downloadBtn.style.display = 'inline-block';
+                downloadBtn.href = APK_URL;
+                downloadBtn.download = 'gg-dance-parent.apk';
+                
+                androidWarning.style.display = 'block';
+                instructions.style.display = 'block';
+                androidSteps.style.display = 'block';
+                
+                // Message de lancement du téléchargement
+                setTimeout(() => {
+                    loader.style.display = 'block';
+                    downloadBtn.innerHTML = '⏳ Téléchargement...';
+                    downloadBtn.click();
+                    
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                        downloadBtn.innerHTML = '✅ Téléchargement Lancé !';
+                        downloadBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #06b6d4 100%)';
+                    }, 2000);
+                }, 1500);
+                
+            } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                // iOS détecté
+                platformInfo.innerHTML = '🍎 iOS Détecté';
+                platformInfo.style.background = 'linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(249, 115, 22, 0.2))';
+                platformInfo.style.borderColor = 'rgba(239, 68, 68, 0.5)';
+                platformInfo.style.color = '#ef4444';
+                platformInfo.classList.remove('pulse');
+                
+                instructions.style.display = 'block';
+                iosSteps.style.display = 'block';
+                
+            } else {
+                // Bureau/Ordinateur
+                platformInfo.innerHTML = '💻 Ordinateur Détecté';
+                platformInfo.style.background = 'linear-gradient(135deg, rgba(100, 116, 139, 0.2), rgba(71, 85, 105, 0.2))';
+                platformInfo.style.borderColor = 'rgba(100, 116, 139, 0.5)';
+                platformInfo.style.color = '#94a3b8';
+                platformInfo.classList.remove('pulse');
+                
+                instructions.style.display = 'block';
+                desktopSteps.style.display = 'block';
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
