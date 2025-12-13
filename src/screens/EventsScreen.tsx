@@ -14,6 +14,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Event, Student, EventRegistration, User } from '../types';
 import { EventRegistrationModal } from '../components/EventRegistrationModal';
 import { eventService, registrationService } from '../services/api';
+import { imageService } from '../utils/imageService';
 
 interface EventsScreenProps {
   students: Student[];

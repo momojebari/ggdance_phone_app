@@ -14,6 +14,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { Student, User } from '../types';
 import { productService } from '../services/api';
+import { imageService } from '../utils/imageService';
 
 interface Product {
   id: string;
@@ -46,15 +47,13 @@ export const ParentShop: React.FC<ParentShopProps> = ({ students, user, navigati
     try {
       // Charger les produits depuis l'API
       const productsData = await productService.getAll();
-      // Convertir les imageUrl relatifs en URLs complètes
+      // Convertir les imageUrl avec le service centralisé
       const productsWithFullUrls = productsData.map((product: any) => ({
         id: product.id || product.productCode,
         name: product.name,
         price: parseFloat(product.price),
         stock: product.availableQuantity || product.stockQuantity || 0,
-        imageUrl: product.imageUrl?.startsWith('/') 
-          ? `http://141.227.133.61:3000${product.imageUrl}`
-          : product.imageUrl,
+        imageUrl: imageService.getUrl(product.imageUrl),
         description: product.description || '',
         category: product.category || 'Produits',
       }));

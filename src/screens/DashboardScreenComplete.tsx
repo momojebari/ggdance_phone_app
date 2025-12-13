@@ -141,11 +141,7 @@ export const DashboardScreenComplete: React.FC<DashboardScreenCompleteProps> = (
                 >
                   <Image
                     source={{ 
-                      uri: student.photoUrl?.startsWith('http') 
-                        ? student.photoUrl 
-                        : student.photoUrl?.startsWith('/uploads')
-                        ? `http://141.227.133.61:3000${student.photoUrl}`
-                        : student.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(student.firstName + ' ' + student.lastName)}&background=a855f7&color=fff&bold=true&size=200`
+                      uri: imageService.getUrl(student.photoUrl) || imageService.getAvatarPlaceholder(`${student.firstName} ${student.lastName}`, student.gender)
                     }}
                     style={styles.avatar}
                     defaultSource={{ uri: `https://ui-avatars.com/api/?name=${encodeURIComponent(student.firstName + ' ' + student.lastName)}&background=a855f7&color=fff&bold=true&size=200` }}

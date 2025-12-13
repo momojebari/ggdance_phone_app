@@ -250,7 +250,7 @@ export const DashboardScreenNew: React.FC<DashboardScreenNewProps> = ({
             >
               <Image
                 source={{
-                  uri: student.photoUrl || getAvatarPlaceholder(student.gender),
+                  uri: imageService.getUrl(student.photoUrl) || imageService.getAvatarPlaceholder(`${student.firstName} ${student.lastName}`, student.gender),
                 }}
                 style={styles.avatar}
               />
